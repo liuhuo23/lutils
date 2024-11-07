@@ -1,0 +1,28 @@
+[package]
+edition = "2021"
+name = "lutils"
+version = "0.1.0"
+
+[dependencies]
+anyhow = "1.0.93"
+clap = {version = "4.5.20", features = [
+  "derive",
+  "cargo",
+  "wrap_help",
+  "unicode",
+  "string",
+  "unstable-styles",
+]}
+libc = "0.2.161"
+regex = "1.11.1"
+serde = {version = "1.0.214", features = ["derive"]}
+serde_json = "1.0.132"
+tabled = "0.16.0"
+thiserror = "2.0.0"
+tracing = "0.1.40"
+tracing-error = "0.2.0"
+tracing-subscriber = {version = "0.3.18", features = ["env-filter", "serde"]}
+
+[[bin]]
+name = "rautomount"
+path = "./bins/rautomount.rs"
