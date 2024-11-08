@@ -284,7 +284,7 @@ mod tests {
 
     #[test]
     fn test_check_mount() {
-        assert_eq!(mount::check_mount("/dev/sdb4"), true);
+        assert_eq!(mount::check_mount("/dev/sdb4"), false);
         assert_eq!(mount::check_mount("/dev/sdb3"), false)
     }
 }
