@@ -21,6 +21,14 @@ fn main() {
                         .action(ArgAction::Set),
                 ),
         )
+        .subcommand(
+            command!("umount").about("卸载设备").arg(
+                Arg::new("device")
+                    .help("<DEV> 设备名称")
+                    .action(ArgAction::Set)
+                    .required(true),
+            ),
+        )
         .arg(arg!(list: -l --list "显示所有label不为空的设备").action(ArgAction::SetTrue))
         .get_matches();
     let count = cmd_match.get_count("debug");
@@ -89,6 +97,36 @@ fn main() {
             info!("或许你可以添加 --all 或者 <DEV>");
         }
         exit(0);
+    }
+    if let Some(sub_match) = cmd_match.subcommand_matches("umount") {
+        info!("卸载设备");
+        if let Some(device) = sub_match.get_one::<String>("device") {
+            info!("卸载设备：{}", device);
+            if let Some(dev) = blkid_list.find_device(&device) {
+                let path_str = format!("/mnt/{}", dev.label);
+                let path = Path::new(&path_str);
+                if path.exists() {
+                    info!("卸载设备：{}", dev.name);
+                    let output = dev.umount(&path_str);
+                    if output.status.success() {
+                        println!("卸载设备：{} to {}", dev.name, path_str);
+                    } else {
+                        eprint!(
+                            "卸载失败：{}, 错误：{}\n",
+                            output.status,
+                            String::from_utf8(output.stderr).unwrap()
+                        );
+                        exit(-1);
+                    }
+                } else {
+                    eprint!("没有找到设备：{}\n", device);
+                    exit(-1);
+                }
+            } else {
+                eprint!("没有找到设备：{}\n", device);
+                exit(-1);
+            }
+        }
     }
     if cmd_match.get_flag("list") {
         info!("显示所有label不为空的设备");

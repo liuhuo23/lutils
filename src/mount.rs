@@ -139,6 +139,15 @@ impl Blkid {
             .unwrap();
         output
     }
+
+    pub fn umount(&self, path: &str) -> Output {
+        // sudo umount /dev/sdb1
+        let output = std::process::Command::new("umount")
+            .arg(path)
+            .output()
+            .unwrap();
+        output
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize)]
