@@ -26,3 +26,7 @@ tracing-subscriber = {version = "0.3.18", features = ["env-filter", "serde"]}
 [[bin]]
 name = "rautomount"
 path = "./bins/rautomount.rs"
+
+[[bin]]
+name = "clashcli"
+path = "./bins/clashcli.rs"
